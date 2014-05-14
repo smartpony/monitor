@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    {% block head %}{% endblock %}
+    <link rel="shortcut icon" href="/static/icon_main.png">
+    <link rel="stylesheet" type="text/css" href="/static/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/custom.css">
+    <script type="text/javascript" src="/static/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/static/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/static/js/custom.js"></script>
+</head>
+<body>
+
+<!-- Панель навигации вверху страницы -->
+<div class="navbar navbar-default" role="navigation">
+    <div class="container-fluid">
+        <ul class="nav navbar-nav">
+            <li{% if request.path == '/' %} class="active"{% endif %}><a href="{{url_for('index')}}">Table</a></li>
+            <li{% if request.path == '/server/add' %} class="active"{% endif %}><a href="{{url_for('server_add')}}">Add server</a></li>
+        </ul>
+    </div>
+</div>
+
+<div id="content" class="container">
+    {% block content %}{% endblock %}
+</div>
+
+</body>
+</html>

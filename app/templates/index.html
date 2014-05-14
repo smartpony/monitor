@@ -1,0 +1,38 @@
+﻿{% extends "base.html" %}
+
+{% block head %}
+    <title>Monitor</title>
+{% endblock %}
+
+{% block content %}
+<h1 id="xxx">Table</h1>
+
+<hr>
+
+<div class="row"><div class="col-md-4">
+	<table id="monitor-table" class="table table-bordered">
+	    <thead>
+	        <tr>
+	            <th class="col-md-8" title="Hi">Name</th>
+	            <th class="col-md-2 text-center">State</th>
+                <th class="col-md-2 text-center">Del</th>
+	        </tr>
+	    </thead>
+
+	    <tbody>
+	        {% for server in states %}
+	        <tr>
+	            <td>{{server.name}}</td>
+	            <td id="srv{{}}" class="text-center">{{states[server]}}</td>
+                <td class="text-center">
+                    <a href="{{url_for('server_del', server_id=server.id)}}">
+                        <i class="glyphicon glyphicon-remove"></i>
+                    </a>
+                </td>
+	        </tr>
+	        {% endfor %}
+	    </tbody>
+	</table>
+</div></div>
+
+{% endblock %}
