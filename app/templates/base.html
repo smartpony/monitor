@@ -15,7 +15,7 @@
 <div class="navbar navbar-default" role="navigation">
     <div class="container-fluid">
         <ul class="nav navbar-nav">
-            <li{% if request.path == '/' %} class="active"{% endif %}><a href="{{url_for('index')}}">Table</a></li>
+            <li{% if request.path == '/' or request.path == '/index' %} class="active"{% endif %}><a href="{{url_for('index')}}">Table</a></li>
             <li{% if request.path == '/server/add' %} class="active"{% endif %}><a href="{{url_for('server_add')}}">Add server</a></li>
         </ul>
     </div>

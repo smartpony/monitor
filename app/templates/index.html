@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block content %}
-<h1 id="xxx">Table</h1>
+<h1>Table</h1>
 
 <hr>
 
@@ -13,17 +13,19 @@
 	<table id="monitor-table" class="table table-bordered">
 	    <thead>
 	        <tr>
-	            <th class="col-md-8" title="Hi">Name</th>
-	            <th class="col-md-2 text-center">State</th>
+	            <th class="col-md-6" title="Hi">Name</th>
+	            <th class="col-md-2 text-center">Ping</th>
+	            <th class="col-md-2 text-center">Telnet</th>
                 <th class="col-md-2 text-center">Del</th>
 	        </tr>
 	    </thead>
 
 	    <tbody>
-	        {% for server in states %}
+	        {% for server in servers %}
 	        <tr>
-	            <td>{{server.name}}</td>
-	            <td id="srv{{}}" class="text-center">{{states[server]}}</td>
+	            <td><a href="{{url_for('server_profile', server_id=server.id)}}">{{server.name}}</a></td>
+	            <td id="srv{{server.id}}-ping" class="text-center"></td>
+	            <td id="srv{{server.id}}-telnet" class="text-center"></td>
                 <td class="text-center">
                     <a href="{{url_for('server_del', server_id=server.id)}}">
                         <i class="glyphicon glyphicon-remove"></i>

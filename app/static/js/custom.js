@@ -1,11 +1,4 @@
-﻿// --- АВТОРЕФРЕШ СТРАНИЦЫ ----------------------
-//$(document).ready(function() {
-//    setInterval(function () {
-//        $('#monitor-table').load("http://localhost:5000/update");  
-//    }, 3000);
-//});
-
-// --- ВАЛИДАЦИЯ ДОБАВИЛЕНИЯ СЕРВЕРА ------------
+﻿// --- ВАЛИДАЦИЯ ДОБАВИЛЕНИЯ СЕРВЕРА ------------
 function addSrvValidate(event) {
     res = true;
 
@@ -49,12 +42,25 @@ $(document).on("keyup", "#name, #ip", postingFormUnmark);
 function updateTable(event) {
     $.ajax({
     	url: '/index-ajax',
-    	dataType: 'json'
-    }).done(function(json) {
-        alert(json.term11);
-    }).fail(function() {
-    	alert("Ajax fail!");
+        //data: {'1': 'ok'},
+    	dataType: 'json',
+        success: function(json) {
+            $.each(json, function(server_id, sensors) {
+                $.each(sensors, function(sensor_name, sensor_state) {
+                    $cell = $('#srv'+server_id+"-"+sensor_name);
+                    if(sensor_state == 'up')
+                        $cell.html('<i class="glyphicon glyphicon-ok text-success"></i>');
+                    else
+                        $cell.html('<i class="glyphicon glyphicon-minus-sign text-danger"></i>');
+                })
+            })
+        }
     });
+    // Авторефреш каждые 3 секунды
+    //setTimeout(updateTable, 3000);
 }
-
-$(document).on("click", "h1", updateTable);
+//$(function() {
+//    updateTable();
+//});
+// Рефреш по клику на заголовок
+$(document).on("click", "h1", updateTable)

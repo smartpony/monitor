@@ -12,3 +12,4 @@ class AddServer(Form):
     dns = TextField()
     ip = TextField(validators=[DataRequired()])
     sensor_ping = BooleanField(default=False)
+    sensor_telnet = BooleanField(default=False)

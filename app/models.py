@@ -22,6 +22,8 @@ class Server(db.Model):
     ip = db.Column(db.Text, nullable=False)
     # Сенсор: ping
     sensor_ping = db.Column(db.Boolean, default=False)
+    # Сенсор: telnet на 445 порт
+    sensor_telnet = db.Column(db.Boolean, default=False)
 
     def __repr__(self):
         return('<Server ID%d>' % self.id)
