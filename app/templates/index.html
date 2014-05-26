@@ -9,32 +9,27 @@
 
 <hr>
 
-<div class="row"><div class="col-md-4">
-	<table id="monitor-table" class="table table-bordered">
-	    <thead>
-	        <tr>
-	            <th class="col-md-6" title="Hi">Name</th>
-	            <th class="col-md-2 text-center">Ping</th>
-	            <th class="col-md-2 text-center">Telnet</th>
-                <th class="col-md-2 text-center">Del</th>
-	        </tr>
-	    </thead>
 
-	    <tbody>
-	        {% for server in servers %}
-	        <tr>
-	            <td><a href="{{url_for('server_profile', server_id=server.id)}}">{{server.name}}</a></td>
-	            <td id="srv{{server.id}}-ping" class="text-center"></td>
-	            <td id="srv{{server.id}}-telnet" class="text-center"></td>
-                <td class="text-center">
-                    <a href="{{url_for('server_del', server_id=server.id)}}">
-                        <i class="glyphicon glyphicon-remove"></i>
-                    </a>
-                </td>
-	        </tr>
-	        {% endfor %}
-	    </tbody>
-	</table>
+<div class="row"><div class="col-md-3">
+<table class="table table-bordered"><tbody>
+    {% for server in servers %}
+    <tr>
+        <td colspan="2"><strong>
+            <a href="{{url_for('server_profile', server_id=server.id)}}">{{server.name}}</a>
+        </strong></td>
+    </tr>
+    {% for sensor in server.sensor %}
+    <tr>
+        <td class="col-md-10">
+            {% if sensor.action == 0 %}Ping
+            {% elif sensor.action == 1 %}Telnet ({{sensor.property_2}})
+            {% endif %}
+        </td>
+        <td id="srv{{server.id}}-snr{{sensor.id}}" class="col-md-2 text-center">-</td>
+    </tr>
+    {% endfor %}
+    {% endfor %}
+</tbody></table>
 </div></div>
 
 {% endblock %}

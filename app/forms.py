@@ -3,13 +3,24 @@
 #
 
 from flask_wtf import Form
-from wtforms import TextField, BooleanField
+from wtforms import TextField, BooleanField, SelectField, TextAreaField
 from wtforms.validators import DataRequired
+from wtforms_html5 import IntegerField
 
-class AddServer(Form):
+class ServerForm(Form):
     name = TextField(validators=[DataRequired()])
-    description = TextField()
     dns = TextField()
     ip = TextField(validators=[DataRequired()])
-    sensor_ping = BooleanField(default=False)
-    sensor_telnet = BooleanField(default=False)
+    description = TextAreaField()
+
+class SensorForm(Form):
+    name = TextField()
+    description = TextAreaField()
+    # Тип (0 - ping, 1 - telnet)
+    action = SelectField(choices=[('0', 'Ping'), ('1', 'Telnet')])
+    # Ping: интервал (сек)
+    # Telnet: интервал (сек), порт
+    property_1 = TextField()
+    property_2 = TextField()
+    property_3 = TextField()
+    property_4 = TextField()

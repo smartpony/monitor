@@ -5,67 +5,70 @@
 {% endblock %}
 
 {% block content %}
-<h1>Server: {{server.name}}</h1>
+<h1>Server: {{server.name}}
+    <a href="{{url_for('server_del', server_id=server.id)}}"><sup><small>
+        <i class="glyphicon glyphicon-remove text-danger"></i>
+    </sup></small></a>
+</h1>
 
 <hr>
 
-{% for field, errors in form.errors.iteritems() %}
-<div class="alert alert-error">
-    {{ field }}: {{ ', '.join(errors) }}
-</div>
-{% endfor %}
-
 <form class="form-horizontal" role="form" action="" method="post">
     {{form.hidden_tag()}}
-    <div class="form-group col-md-4">
+    <div class="form-group col-md-6">
         <div class="form-group">
-            <label class="col-md-4 control-label">Name:</label>
-            <div class="col-md-8">
+            <label class="col-md-3 control-label">Name:</label>
+            <div class="col-md-6">
                 {{form.name(class="form-control", value=server.name)}}
             </div>
         </div>
         <div class="form-group">
-            <label class="col-md-4 control-label">DNS:</label>
-            <div class="col-md-8">
+            <label class="col-md-3 control-label">DNS:</label>
+            <div class="col-md-6">
                 {{form.dns(class="form-control", value=server.dns)}}
             </div>
         </div>
         <div class="form-group">
-            <label class="col-md-4 control-label">IP:</label>
-            <div class="col-md-8">
+            <label class="col-md-3 control-label">IP:</label>
+            <div class="col-md-6">
                 {{form.ip(class="form-control", value=server.ip)}}
             </div>
         </div>
-        <div class="form-group">            
-            <label class="col-md-4 control-label">Ping:</label>
-            <div class="col-md-8">
-                <div class="checkbox">
-                    {% if server.sensor_ping %}
-                    {{form.sensor_ping(checked=True)}}
-                    {% else %}
-                    {{form.sensor_ping()}}
-                    {% endif %}
-                </div>
+        <div class="form-group">
+            <label class="col-md-3 control-label">Sensors:</label>
+            <div class="col-md-6">
+                <p class="form-control-static">
+                    {% for sensor in server.sensor %}
+                    <span class="badge">
+                        {% if sensor.action == 0 %}ping
+                        {% elif sensor.action == 1 %}telnet: {{sensor.property_2}}
+                        {% endif %}
+                    </span>
+                    {% endfor %}
+                    <a href="{{url_for('sensor_add', server_id=server.id)}}">
+                        <i class="glyphicon glyphicon-plus text-active"></i>
+                    </a>
+                </p>
             </div>
         </div>
         <div class="form-group">
-            <label class="col-md-4 control-label">Telnet:</label>
-            <div class="col-md-8">
-                <div class="checkbox active">
-                    {% if server.sensor_telnet %}
-                    {{form.sensor_telnet(checked=True)}}
-                    {% else %}
-                    {{form.sensor_telnet()}}
-                    {% endif %}
-                </div>
+            <label class="col-md-3 control-label">Description:</label>
+            <div class="col-md-9">
+                {{form.description(class="form-control", rows="4")}}
             </div>
         </div>
         <div class="form-group">
-            <div class="col-md-offset-4 col-md-5">
+            <div class="col-md-offset-3 col-md-4">
                 <input class="btn btn-primary form-control" type="submit" value="Save">
             </div>
         </div>
     </div>
+
+
+
+
+
 </form>
 
+                
 {% endblock %}

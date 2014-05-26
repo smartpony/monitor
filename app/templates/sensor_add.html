@@ -1,0 +1,71 @@
+﻿{% extends "base.html" %}
+
+{% block head %}
+    <title>Add sensor</title>
+{% endblock %}
+
+{% block content %}
+<h1>Add sensor</h1>
+
+<hr>
+
+<form class="form-horizontal" role="form" action="" method="post">
+    {{form.hidden_tag()}}
+    <div class="form-group col-md-6">
+        <div class="form-group">
+            <label class="col-md-3 control-label">Name:</label>
+            <div class="col-md-6">
+                {{form.name(class="form-control")}}
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-3 control-label">Type:</label>
+            <div class="col-md-6">
+                {{form.action(class="form-control")}}
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-3 control-label">Property 1:</label>
+            <div class="col-md-6">
+                {{form.property_1(class="form-control")}}
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-3 control-label">Property 2:</label>
+            <div class="col-md-6">
+                {{form.property_2(class="form-control")}}
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-3 control-label">Property 3:</label>
+            <div class="col-md-6">
+                {{form.property_3(class="form-control")}}
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-3 control-label">Property 4:</label>
+            <div class="col-md-6">
+                {{form.property_4(class="form-control")}}
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-3 control-label">Description:</label>
+            <div class="col-md-9">
+                {{form.description(class="form-control", rows="4")}}
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-3 col-md-4">
+                <input class="btn btn-primary form-control" type="submit" value="Add">
+            </div>
+        </div>
+    </div>
+</form>
+
+{% for field, errors in form.errors.iteritems() %}
+<div class="alert alert-error">11
+    {{ field }}: {{ ', '.join(errors) }}
+</div>
+{% endfor %}
+
+{% endblock %}

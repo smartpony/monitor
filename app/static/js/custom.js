@@ -42,16 +42,15 @@ $(document).on("keyup", "#name, #ip", postingFormUnmark);
 function updateTable(event) {
     $.ajax({
     	url: '/index-ajax',
-        //data: {'1': 'ok'},
     	dataType: 'json',
         success: function(json) {
             $.each(json, function(server_id, sensors) {
-                $.each(sensors, function(sensor_name, sensor_state) {
-                    $cell = $('#srv'+server_id+"-"+sensor_name);
-                    if(sensor_state == 'up')
+                $.each(sensors, function(sensor_id, sensor_data) {
+                    $cell = $('#srv'+server_id+"-snr"+sensor_id);
+                    if(sensor_data)
                         $cell.html('<i class="glyphicon glyphicon-ok text-success"></i>');
                     else
-                        $cell.html('<i class="glyphicon glyphicon-minus-sign text-danger"></i>');
+                        $cell.html('<i class="glyphicon glyphicon-remove text-danger"></i>');
                 })
             })
         }
