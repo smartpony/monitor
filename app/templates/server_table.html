@@ -5,27 +5,21 @@
 {% endblock %}
 
 {% block content %}
-<h1>Monitoring</h1>
+<h1>Server: {{server.name}}
+    <a href="{{url_for('server_profile', server_id=server.id)}}">
+        <sup><small><i class="glyphicon glyphicon-pencil"></i></small></sup>
+    </a>
+</h1>
 
 <hr>
 
 <div class="row"><div class="col-md-3">
 <table class="table table-bordered"><tbody>
-    {% for server in servers %}
-    <tr>
-        <td colspan="2"><strong>
-            <a href="{{url_for('server_table', server_id=server.id)}}">{{server.name}}</a>
-            <a href="{{url_for('server_profile', server_id=server.id)}}">
-                <sup><small><i class="glyphicon glyphicon-pencil"></i></small></sup>
-            </a>
-        </strong></td>
-    </tr>
     {% for sensor in server.sensor %}
     <tr>
         <td class="col-md-10">{{sensor.name}}</td>
         <td id="srv{{server.id}}-snr{{sensor.id}}" class="col-md-2 text-center">-</td>
     </tr>
-    {% endfor %}
     {% endfor %}
 </tbody></table>
 </div></div>

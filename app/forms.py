@@ -17,7 +17,7 @@ class SensorForm(Form):
     name = TextField()
     description = TextAreaField()
     # Тип (0 - ping, 1 - telnet)
-    action = SelectField(choices=[('0', 'Ping'), ('1', 'Telnet')])
+    action = SelectField(choices=[('0', 'Ping'), ('1', 'Telnet')], default=0)
     # Ping: интервал (сек)
     # Telnet: интервал (сек), порт
     property_1 = TextField()

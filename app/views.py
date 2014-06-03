@@ -2,7 +2,7 @@
 # Обработка запросов клиентов
 #
 
-from flask import render_template, redirect, url_for, jsonify, request
+from flask import render_template, redirect, url_for, jsonify, request, abort
 import os
 from datetime import datetime
 from multiprocessing.pool import ThreadPool
@@ -19,6 +19,7 @@ from forms import ServerForm, SensorForm
 # --- ТАБЛИЦА МОНИТОРИНГА -----------------------
 @app.route('/')
 @app.route('/index')
+@app.route('/table')
 def index():
     servers = Server.query.all()
 
@@ -26,11 +27,28 @@ def index():
         servers=servers))
 
 
+# --- ТАБЛИЦА МОНИТОРИНГА ОТДЕЛЬНОГО СЕРВЕРА ----
+@app.route('/server/table/<server_id>')
+def server_table(server_id):
+    server = Server.query.get(server_id)
+
+    # Проверка существования объекта
+    if not server:
+        abort(404)
+
+    return(render_template('server_table.html',
+        server=server))
+
+
 # --- ОБНОВЛЕНИЕ ЧАСТИ ТАБЛИЦЫ МОНИТОРИНГА ------
 @app.route('/index-ajax')
 def index_ajax():
-    servers = Server.query.all()
     sensors_data = {}
+    server_id = request.args.get('server')
+    if server_id == 'all':
+        servers = Server.query.all()
+    else:
+        servers = [Server.query.get(int(server_id))]
 
     '''
     Старый кусок с параллельным пингом
@@ -51,8 +69,7 @@ def index_ajax():
                     telnet_results[server.id][port] = 'down'
     '''
 
-    # Параллельный пинг всех серверов - создание заданий
-    # (неспосредственно запуск пингов) и поочерёдный телнет
+    # Работа всех сенсоров (последовательно)
     for server in servers:
         sensors_data[server.id] = {}
         for sensor in server.sensor:
@@ -112,15 +129,10 @@ def server_profile(server_id):
         abort(404)
 
     if form.validate_on_submit():
-        form_name = form.name.data
-        form_dns = form.dns.data
-        form_ip = form.ip.data
-        form_description = form.description.data
-
-        server.name = form_name
-        server.dns = form_dns
-        server.ip = form_ip
-        server.description = form_description
+        server.name = form.name.data
+        server.dns = form.dns.data
+        server.ip = form.ip.data
+        server.description = form.description.data
         db.session.commit()
 
         return(redirect(request.referrer))
@@ -131,6 +143,21 @@ def server_profile(server_id):
     return(render_template('server_profile.html',
         form=form,
         server=server))
+
+
+# --- УДАЛЕНИЕ СЕРВЕРА --------------------------
+@app.route('/server/del/<server_id>')
+def server_del(server_id):
+    server = Server.query.get(server_id)
+
+    # Проверка существования объекта
+    if not server:
+        abort(404)
+
+    db.session.delete(server)
+    db.session.commit()
+
+    return(redirect(url_for('index')))
 
 
 # --- ДОБАВЛЕНИЕ СЕНСОРА ------------------------
@@ -163,22 +190,53 @@ def sensor_add(server_id):
         db.session.add(new_sensor)
         db.session.commit()
 
-        return(redirect(url_for('index')))
+        return(redirect(url_for('server_profile', server_id=server.id)))
 
     return(render_template('sensor_add.html',
-        form=SensorForm()))
+        form=form))
 
 
-# --- УДАЛЕНИЕ СЕРВЕРА --------------------------
-@app.route('/server/del/<server_id>')
-def server_del(server_id):
-    server = Server.query.get(server_id)
+# --- ПРОФИЛЬ СЕНСОРА ---------------------------
+@app.route('/sensor/profile/<sensor_id>', methods=['GET', 'POST'])
+def sensor_profile(sensor_id):
+    form = SensorForm()
+    sensor = Sensor.query.get(sensor_id)
 
     # Проверка существования объекта
-    if not server:
+    if not sensor:
         abort(404)
 
-    db.session.delete(server)
+    if form.validate_on_submit():
+        sensor.name = form.name.data
+        sensor.action = int(form.action.data)
+        sensor.property_1 = form.property_1.data
+        sensor.property_2 = form.property_2.data
+        sensor.property_3 = form.property_3.data
+        sensor.property_4 = form.property_4.data
+        sensor.description = form.description.data
+        db.session.commit()
+
+        return(redirect(url_for('server_profile', server_id=sensor.server_id)))
+
+    # Вывод старого описания, по-другому никак потому что это TextArea
+    form.description.data = sensor.description
+
+    return(render_template('sensor_profile.html',
+        form=form,
+        sensor=sensor))
+
+
+# --- УДАЛЕНИЕ СЕНСОРА --------------------------
+@app.route('/sensor/del/<sensor_id>')
+def sensor_del(sensor_id):
+    sensor = Sensor.query.get(sensor_id)
+    server_id = sensor.server_id
+
+    # Проверка существования объекта
+    if not sensor:
+        abort(404)
+
+    db.session.delete(sensor)
     db.session.commit()
 
-    return(redirect(url_for('index')))
+    return(redirect(url_for('server_profile', server_id=server_id)))

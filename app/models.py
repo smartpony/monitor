@@ -47,7 +47,7 @@ class Sensor(db.Model):
     server_id = db.Column(db.Integer, db.ForeignKey('Server.id'))
     server = db.relationship('Server',
         #foreign_keys=[server_id],
-        backref=db.backref('sensor', lazy='dynamic'))
+        backref=db.backref('sensor', cascade='delete', lazy='dynamic'))
 
     def __repr__(self):
         return('<Sensor ID%d>' % self.id)

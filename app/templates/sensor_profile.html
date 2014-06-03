@@ -1,51 +1,56 @@
 ﻿{% extends "base.html" %}
 
 {% block head %}
-    <title>Add sensor</title>
+    <title>Sensor: {{sensor.name}}</title>
 {% endblock %}
 
 {% block content %}
-<h1>Add sensor</h1>
+<h1>Sensor: {{sensor.name}}
+    <a href="{{url_for('sensor_del', sensor_id=sensor.id)}}"><sup><small>
+        <i class="glyphicon glyphicon-remove text-danger"></i>
+    </sup></small></a>
+</h1>
 
 <hr>
 
-<form id="form-new-sensor" class="form-horizontal" role="form" action="" method="post">
+<form id="form-profile-sensor" class="form-horizontal" role="form" action="" method="post">
     {{form.hidden_tag()}}
     <div class="form-group col-md-6">
         <div class="form-group">
             <label class="col-md-3 control-label">Name:</label>
             <div class="col-md-6">
-                {{form.name(class="form-control", value="Ping")}}
+                {{form.name(class="form-control", value=sensor.name)}}
             </div>
         </div>
         <div class="form-group">
             <label class="col-md-3 control-label">Type:</label>
             <div class="col-md-6">
-                {{form.action(class="form-control")}}
+                <input class="form-control" id="name" name="name" type="text" value="{% if sensor.action == 0 %}Ping{% elif sensor.action == 1%}Telnet{%endif%}" readonly>
+                
             </div>
         </div>
-        <div id="group-property-1" class="form-group">
+        <div class="form-group">
             <label id="sensor-property-1" class="col-md-3 control-label">Interval:</label>
             <div class="col-md-6">
-                {{form.property_1(class="form-control")}}
+                {{form.property_1(class="form-control", value=sensor.property_1)}}
             </div>
         </div>
-        <div id="group-property-2" class="form-group">
+        <div class="form-group">
             <label id="sensor-property-2" class="col-md-3 control-label">Packet size:</label>
             <div class="col-md-6">
-                {{form.property_2(class="form-control")}}
+                {{form.property_2(class="form-control", value=sensor.property_2)}}
             </div>
         </div>
-        <div id="group-property-3" class="form-group" style="display: none;">
+        <div class="form-group" style="display: none;">
             <label id="sensor-property-3" class="col-md-3 control-label">Property 3:</label>
             <div class="col-md-6">
-                {{form.property_3(class="form-control")}}
+                {{form.property_3(class="form-control", value=sensor.property_3)}}
             </div>
         </div>
-        <div id="group-property-4" class="form-group" style="display: none;">
+        <div class="form-group" style="display: none;">
             <label id="sensor-property-4" class="col-md-3 control-label">Property 4:</label>
             <div class="col-md-6">
-                {{form.property_4(class="form-control")}}
+                {{form.property_4(class="form-control", value=sensor.property_4)}}
             </div>
         </div>
         <div class="form-group">
@@ -56,7 +61,7 @@
         </div>
         <div class="form-group">
             <div class="col-md-offset-3 col-md-4">
-                <input class="btn btn-primary form-control" type="submit" value="Add">
+                <input class="btn btn-primary form-control" type="submit" value="Save">
             </div>
         </div>
     </div>

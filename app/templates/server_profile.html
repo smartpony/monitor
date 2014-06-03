@@ -40,9 +40,7 @@
                 <p class="form-control-static">
                     {% for sensor in server.sensor %}
                     <span class="badge">
-                        {% if sensor.action == 0 %}ping
-                        {% elif sensor.action == 1 %}telnet: {{sensor.property_2}}
-                        {% endif %}
+                        <a href="{{url_for('sensor_profile', sensor_id=sensor.id)}}">{{sensor.name}}</a>
                     </span>
                     {% endfor %}
                     <a href="{{url_for('sensor_add', server_id=server.id)}}">
@@ -63,11 +61,6 @@
             </div>
         </div>
     </div>
-
-
-
-
-
 </form>
 
                 
