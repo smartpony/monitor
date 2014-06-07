@@ -240,3 +240,10 @@ def sensor_del(sensor_id):
     db.session.commit()
 
     return(redirect(url_for('server_profile', server_id=server_id)))
+
+
+
+# --- УДАЛЕНИЕ СЕНСОРА --------------------------
+@app.route('/plot')
+def plot():
+    return(render_template('plot.html'))
