@@ -17,7 +17,9 @@
 <table class="table table-bordered"><tbody>
     {% for sensor in server.sensor %}
     <tr>
-        <td class="col-md-10">{{sensor.name}}</td>
+        <td class="col-md-10">
+            <a href="{{url_for('sensor_profile', sensor_id=sensor.id)}}">{{sensor.name}}</a>
+        </td>
         <td id="srv{{server.id}}-snr{{sensor.id}}" class="col-md-2 text-center">-</td>
     </tr>
     {% endfor %}

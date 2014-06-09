@@ -1,11 +1,11 @@
 ﻿{% extends "base.html" %}
 
 {% block head %}
-    <title>Sensor: {{sensor.name}}</title>
+    <title>Sensor: {{sensor.server.name}}/{{sensor.name}}</title>
 {% endblock %}
 
 {% block content %}
-<h1>Sensor: {{sensor.name}}
+<h1>Sensor: {{sensor.server.name}}/{{sensor.name}}
     <a href="{{url_for('sensor_del', sensor_id=sensor.id)}}"><sup><small>
         <i class="glyphicon glyphicon-remove text-danger"></i>
     </sup></small></a>
@@ -26,7 +26,6 @@
             <label class="col-md-3 control-label">Type:</label>
             <div class="col-md-6">
                 <input class="form-control" id="name" name="name" type="text" value="{% if sensor.action == 0 %}Ping{% elif sensor.action == 1%}Telnet{%endif%}" readonly>
-                
             </div>
         </div>
         <div class="form-group">
@@ -65,6 +64,13 @@
             </div>
         </div>
     </div>
+     <div class="col-md-6">
+        <div id="sensor-chart" style="height: 300px; width: 500px;">
+            <!-- JS вставит график в этом месте -->
+        </div>
+        <h4 id="update-me">5</h4>
+    </div>
 </form>
+
 
 {% endblock %}

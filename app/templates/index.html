@@ -9,25 +9,29 @@
 
 <hr>
 
-<div class="row"><div class="col-md-3">
-<table class="table table-bordered"><tbody>
-    {% for server in servers %}
-    <tr>
-        <td colspan="2"><strong>
-            <a href="{{url_for('server_table', server_id=server.id)}}">{{server.name}}</a>
-            <a href="{{url_for('server_profile', server_id=server.id)}}">
-                <sup><small><i class="glyphicon glyphicon-pencil"></i></small></sup>
-            </a>
-        </strong></td>
-    </tr>
-    {% for sensor in server.sensor %}
-    <tr>
-        <td class="col-md-10">{{sensor.name}}</td>
-        <td id="srv{{server.id}}-snr{{sensor.id}}" class="col-md-2 text-center">-</td>
-    </tr>
-    {% endfor %}
-    {% endfor %}
-</tbody></table>
-</div></div>
+<div class="row">
+    <div class="col-md-4">
+        <table class="table table-bordered"><tbody>
+            {% for server in servers %}
+            <tr>
+                <td colspan="2"><strong>
+                    <a href="{{url_for('server_table', server_id=server.id)}}">{{server.name}}</a>
+                </strong></td>
+            </tr>
+            {% for sensor in server.sensor %}
+            <tr>
+                <td class="col-md-10">{{sensor.name}}</td>
+                <td id="srv{{server.id}}-snr{{sensor.id}}" class="col-md-2 text-center">-</td>
+            </tr>
+            {% endfor %}
+            {% endfor %}
+        </tbody></table>
+    </div>
+    <div class="col-md-5 col-md-offset-1">
+        <div id="index-table-chart" style="height: 300px; width: 400px;">
+            <!-- JS вставит график в этом месте -->
+        </div>
+    </div>    
+</div>
 
 {% endblock %}

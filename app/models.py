@@ -46,7 +46,6 @@ class Sensor(db.Model):
     # Обратная связь с таблицей серверов
     server_id = db.Column(db.Integer, db.ForeignKey('Server.id'))
     server = db.relationship('Server',
-        #foreign_keys=[server_id],
         backref=db.backref('sensor', cascade='delete', lazy='dynamic'))
 
     def __repr__(self):

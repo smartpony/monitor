@@ -103,68 +103,78 @@ function showSensorProperties(event) {
 $(document).on("change", "#action", showSensorProperties);
 
 
-// --- ГРАФИК (ТЕСТОВЫЙ) ------------------------
+// --- ГРАФИКИ (ТЕСТ) ---------------------------
 // Круговой график
-$(function() {
-    $.jqplot("piediv", [[["One", 10], ["Two", 15], ["Three", 9], ["Four", 4]]], {
-        title: "Pie",
-        seriesDefaults: {
-            renderer: jQuery.jqplot.PieRenderer, 
-            rendererOptions: {
-                showDataLabels: true
+function renderPie() {
+    // Есть место под график
+    if($("#index-table-chart").length) {
+        $.jqplot("index-table-chart", [[["One", 10], ["Two", 15], ["Three", 9], ["Four", 4]]], {
+            title: "Pie",
+            seriesDefaults: {
+                renderer: jQuery.jqplot.PieRenderer, 
+                rendererOptions: {
+                    showDataLabels: true
+                }
+            },
+            legend: {
+                show: true,
+                location: "e"
             }
-        },
-        legend: {
-            show: true,
-            location: "e"
-        }
-    });
-})
+        });
+    }
+}
+// index
+$(document).ready(renderPie);
+
 
 // График по точкам
 function renderLine() {
-    // Источник данных для динамического изменения графика
-    var counter = $("#update-me").text();
-    counter = parseInt(counter) + 1;
-    $("#update-me").text(counter);
+    // Есть место под график
+    if($("#sensor-chart").length) {
+        // Источник данных для динамического изменения графика
+        var counter = $("#update-me").text();
+        counter = parseInt(counter) - 1;
+        $("#update-me").text(counter);
 
-    var plot_data = [
-        ['2008-06-30 8:00AM', counter],
-        ['2008-7-30 8:00AM', counter+1],
-        ['2008-8-30 8:00AM', counter+2],
-        ['2008-9-30 8:00AM', counter+3],
-        ['2008-10-30 8:00AM', counter+4]
-    ];
+        var plot_data = [
+            ["2008-06-30 8:00", counter],
+            ["2008-7-30 8:00", counter+3],
+            ["2008-8-30 8:00", counter+9],
+            ["2008-9-30 8:00", counter+2],
+            ["2008-10-30 8:00", counter+6]
+        ];
 
-    line_plot = $.jqplot("chartdiv", [plot_data], {
-        title: "Line",
-        seriesDefaults: {
-            showMarker: false
-        },
-        axes: {
-            xaxis: {
-                label: "X-Axis (date)",
-                min: 'May 30, 2008',
-                max: 'Dec 30, 2008',
-                labelRenderer: $.jqplot.CanvasAxisLabelRenderer,
-                renderer: $.jqplot.DateAxisRenderer,
-                tickOptions:{formatString:'%b %#d, %y'}
+        line_plot = $.jqplot("sensor-chart", [plot_data], {
+            title: "Line",
+            seriesDefaults: {
+                fill: true,
+                showMarker: false
             },
-            yaxis: {
-                label: "Y-Axis (sec)",
-                min: 0,
-                max: 15,
-                labelRenderer: $.jqplot.CanvasAxisLabelRenderer
-            }
-        },
-        highlighter: {
-            show: true,
-            sizeAdjust: 7.5
-        },
-        series: [{color: "#5FAB78"}]
-    }).replot();
+            axes: {
+                xaxis: {
+                    label: "X-Axis (date)",
+                    min: "2008-06-30 8:00",
+                    max: "2008-10-30 8:00",
+                    labelRenderer: $.jqplot.CanvasAxisLabelRenderer,
+                    renderer: $.jqplot.DateAxisRenderer,
+                    tickOptions:{formatString: "%b %#d, %y"}
+                },
+                yaxis: {
+                    label: "Y-Axis (sec)",
+                    min: 0,
+                    max: 16,
+                    labelRenderer: $.jqplot.CanvasAxisLabelRenderer
+                }
+            },
+            highlighter: {
+                show: true,
+                sizeAdjust: 7.5
+            },
+            series: [{color: "#5FAB78"}]
+        }).replot();
+    }
 }
-
+// sensor_profile
 $(document).ready(renderLine);
 // Рефреш по клику на заголовок
 $(document).on("click", "#update-me", renderLine);
